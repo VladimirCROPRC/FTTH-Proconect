@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PRO CONECT FTTH - Dashboard</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI',Arial,sans-serif;
+    background:#f4f7fb;
+    color:#333;
+}
+
+.header{
+    background:linear-gradient(
+        135deg,
+        #005baa,
+        #0072ce
+    );
+    color:white;
+    padding:20px 30px;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo-icon{
+    width:60px;
+    height:60px;
+    border-radius:12px;
+    background:white;
+    color:#005baa;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.app-title{
+    font-size:24px;
+    font-weight:700;
+}
+
+.app-subtitle{
+    font-size:14px;
+    opacity:.9;
+}
+
+.layout{
+    display:flex;
+    min-height:calc(100vh - 100px);
+}
+
+.sidebar{
+    width:260px;
+    background:white;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.menu-title{
+    font-size:12px;
+    color:#888;
+    text-transform:uppercase;
+    margin-bottom:15px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#333;
+    padding:12px 15px;
+    border-radius:10px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.menu a:hover{
+    background:#eef5ff;
+    color:#005baa;
+}
+
+.menu a.active{
+    background:#005baa;
+    color:white;
+}
+
+.content{
+    flex:1;
+    padding:25px;
+}
+
+.page-title h1{
+    margin:0;
+    color:#005baa;
+}
+
+.page-title p{
+    color:#666;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+
+.card-title{
+    color:#666;
+}
+
+.card-value{
+    font-size:42px;
+    font-weight:700;
+    color:#005baa;
+    margin-top:10px;
+}
+
+.actions{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.action-card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+
+.action-card h3{
+    margin-top:0;
+    color:#005baa;
+}
+
+button{
+    background:#005baa;
+    color:white;
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+button:hover{
+    background:#00468a;
+}
+
+.footer{
+    margin-top:30px;
+    text-align:center;
+    color:#888;
+    font-size:13px;
+}
+
+@media(max-width:900px){
+
+    .layout{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+            PC
+        </div>
+
+        <div>
+
+            <div class="app-title">
+                PRO CONECT FTTH
+            </div>
+
+            <div class="app-subtitle">
+                Platformă management ODB și măsurători optice
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="layout">
+
+    <div class="sidebar">
+
+        <div class="menu-title">
+            Navigare
+        </div>
+
+        <div class="menu">
+
+    <a href="dashboard.html" class="active">
+        🏠 Dashboard
+    </a>
+
+    <a href="projects.html" class="active">
+        📁 Proiecte
+    </a>
+<a href="users.html" class="active">
+    
+        👤 Utilizatori
+    </a>
+
+   <a href="assignments.html" class="active">
+        🔗 Alocări
+    </a>
+
+        📊 Rapoarte
+    </a>
+
+    <a href="login.html">
+        🚪 Logout
+    </a>
+
+</div>
+
+    </div>
+
+    <div class="content">
+
+        <div class="page-title">
+
+            <h1>Dashboard Manager</h1>
+
+            <p>
+                Vizualizare generală a proiectelor și utilizatorilor.
+            </p>
+
+        </div>
+
+        <div class="stats">
+
+            <div class="card">
+                <div class="card-title">
+                    📁 Proiecte Active
+                </div>
+                <div class="card-value">
+                    3
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    👷 Tehnicieni
+                </div>
+                <div class="card-value">
+                    5
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    📡 Măsurători
+                </div>
+                <div class="card-value">
+                    0
+                </div>
+            </div>
+
+        </div>
+
+        <div class="actions">
+
+            <div class="action-card">
+
+                <h3>
+                    📁 Administrare Proiecte
+                </h3>
+
+                <p>
+                    Creare și gestionare proiecte FTTH.
+                </p>
+
+               <a href="projects.html" class="active">
+                    Administrare Proiecte
+                </button>
+				
+				<p>
+				
+				</p>
+				
+
+               
+
+               <a href="assignments.html" class="active">
+                    Alocare Proiecte
+                </button>
+
+            </div>
+
+          
+<div class="action-card">
+
+                
+				
+				
+				
+				<p>
+				
+				<P>
+				
+				<a href="users.html" class="active">
+                    Administrare Utilizatori
+                </button>
+
+            </div>
+             
+
+               
+
+            
+
+        </div>
+
+        <div class="footer">
+            PRO CONECT FTTH • Dashboard v0.1
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
