@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PRO CONECT FTTH - Măsurătoare ODB</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI',Arial,sans-serif;
+    background:#f4f7fb;
+    color:#333;
+}
+
+.header{
+    background:linear-gradient(
+        135deg,
+        #005baa,
+        #0072ce
+    );
+    color:white;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.15);
+}
+
+.logo-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo-icon{
+    width:60px;
+    height:60px;
+    border-radius:12px;
+    background:white;
+    color:#005baa;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.app-title{
+    font-size:24px;
+    font-weight:700;
+}
+
+.app-subtitle{
+    font-size:14px;
+    opacity:.9;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    padding:20px;
+}
+
+.box{
+    background:white;
+    padding:25px;
+    border-radius:14px;
+    box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+
+h2{
+    margin-top:0;
+    color:#005baa;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:15px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#0072ce;
+}
+
+button{
+    width:100%;
+    background:#005baa;
+    color:white;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    cursor:pointer;
+    font-weight:600;
+    font-size:15px;
+}
+
+button:hover{
+    background:#00468a;
+}
+
+.gps-box{
+    background:#eef5ff;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:15px;
+}
+
+.photo-box{
+    background:#f7f9fc;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:15px;
+}
+
+.success{
+    background:#eaf8ed;
+    color:#1f6935;
+    padding:15px;
+    border-radius:10px;
+    margin-top:15px;
+    display:none;
+}
+
+.warning{
+    color:#c98300;
+    font-weight:600;
+}
+
+.ok{
+    color:green;
+    font-weight:600;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <div class="logo-area">
+
+        <div class="logo-icon">
+            PC
+        </div>
+
+        <div>
+
+            <div class="app-title">
+                PRO CONECT FTTH
+            </div>
+
+            <div class="app-subtitle">
+                Măsurătoare ODB
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container">
+
+    <div class="box">
+
+        <h2>📡 Măsurătoare ODB</h2>
+
+        <label>Proiect</label>
+
+        <select id="project">
+
+            <option>FTTH Floresti Sud</option>
+            <option>FTTH Apahida Nord</option>
+            <option>FTTH Baciu</option>
+
+        </select>
+
+        <label>Nume ODB</label>
+
+        <input
+            type="text"
+            id="odb"
+            placeholder="Ex: ODB-FL-123"
+            oninput="this.value=this.value.toUpperCase()">
+
+        <label>Valoare 1490 nm (dBm)</label>
+
+        <input
+            type="number"
+            step="0.01"
+            id="value1490">
+
+        <label>Valoare 1550 nm (dBm)</label>
+
+        <input
+            type="number"
+            step="0.01"
+            id="value1550">
+
+        <div class="photo-box">
+
+            <strong>Fotografie Powermetru</strong>
+
+            <br><br>
+
+            <button
+                type="button"
+                onclick="openCamera()">
+
+                📷 Fotografiază Powermetrul
+
+            </button>
+
+            <input
+                type="file"
+                id="photo"
+                accept="image/*"
+                capture="environment"
+                style="display:none;">
+
+            <div
+                id="photoStatus"
+                class="warning"
+                style="margin-top:10px;">
+
+                Nicio fotografie capturată.
+
+            </div>
+
+        </div>
+
+        <div class="gps-box">
+
+            <strong>Coordonate GPS</strong>
+
+            <div id="gpsStatus" class="warning">
+
+                GPS necapturat
+
+            </div>
+
+        </div>
+
+        <button onclick="saveMeasurement()">
+            💾 Salvează Măsurătoarea
+        </button>
+
+        <div
+            id="saveStatus"
+            class="success">
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+let latitude = "";
+let longitude = "";
+let photoName = "";
+
+function captureGPS(){
+
+    if(!navigator.geolocation){
+
+        alert(
+            "GPS indisponibil pe acest dispozitiv."
+        );
+
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position){
+
+            latitude =
+                position.coords.latitude;
+
+            longitude =
+                position.coords.longitude;
+
+            document
+            .getElementById(
+                "gpsStatus"
+            )
+            .innerHTML =
+
+                '<span class="ok">✅ GPS capturat</span><br>' +
+                'Lat: ' +
+                latitude.toFixed(6) +
+                '<br>Lon: ' +
+                longitude.toFixed(6);
+
+        },
+
+        function(){
+
+            alert(
+                "Nu s-au putut obține coordonatele GPS."
+            );
+
+        }
+
+    );
+
+}
+
+function openCamera(){
+
+    const odb =
+        document.getElementById(
+            "odb"
+        ).value.trim().toUpperCase();
+
+    if(odb === ""){
+
+        alert(
+            "Introduceți mai întâi numele ODB."
+        );
+
+        return;
+    }
+
+    captureGPS();
+
+    document
+    .getElementById("photo")
+    .click();
+
+}
+
+document
+.getElementById("photo")
+.addEventListener("change", function(){
+
+    const odb =
+        document.getElementById(
+            "odb"
+        ).value.trim().toUpperCase();
+
+    if(!this.files.length){
+
+        return;
+    }
+
+    photoName =
+        odb + ".jpg";
+
+    document
+    .getElementById(
+        "photoStatus"
+    )
+    .innerHTML =
+
+        '<span class="ok">✅ Fotografie capturată</span><br>' +
+        photoName;
+
+});
+
+function saveMeasurement(){
+
+    const project =
+        document.getElementById(
+            "project"
+        ).value;
+
+    const odb =
+        document.getElementById(
+            "odb"
+        ).value.trim().toUpperCase();
+
+    const value1490 =
+        document.getElementById(
+            "value1490"
+        ).value;
+
+    const value1550 =
+        document.getElementById(
+            "value1550"
+        ).value;
+
+    const photo =
+        document.getElementById(
+            "photo"
+        ).files[0];
+
+    if(
+        odb === "" ||
+        value1490 === "" ||
+        value1550 === ""
+    ){
+
+        alert(
+            "Completați toate câmpurile."
+        );
+
+        return;
+
+    }
+
+    if(!photo){
+
+        alert(
+            "Capturați fotografia powermetrului."
+        );
+
+        return;
+
+    }
+
+    if(
+        latitude === "" ||
+        longitude === ""
+    ){
+
+        alert(
+            "Capturați coordonatele GPS."
+        );
+
+        return;
+
+    }
+
+    const saveStatus =
+        document.getElementById(
+            "saveStatus"
+        );
+
+    saveStatus.style.display =
+        "block";
+
+    saveStatus.innerHTML =
+
+        "<strong>✅ Măsurătoarea este validă.</strong><br><br>" +
+
+        "<b>Proiect:</b> " +
+        project +
+
+        "<br><b>ODB:</b> " +
+        odb +
+
+        "<br><b>1490 nm:</b> " +
+        value1490 +
+
+        "<br><b>1550 nm:</b> " +
+        value1550 +
+
+        "<br><b>Fotografie:</b> " +
+        photoName +
+
+        "<br><b>Latitudine:</b> " +
+        latitude +
+
+        "<br><b>Longitudine:</b> " +
+        longitude;
+
+    console.log({
+
+        project,
+        odb,
+        photoName,
+        value1490,
+        value1550,
+        latitude,
+        longitude
+
+    });
+
+    /*
+    Etapa backend:
+
+    POST /api/measurements
+
+    Backend:
+    - salvează poza ca ODB-FL-123.jpg
+    - actualizează Masuratori.xlsx
+    - salvează în folderul proiectului OneDrive
+    */
+
+}
+
+</script>
+
+</body>
+</html>
